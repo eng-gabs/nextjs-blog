@@ -1,27 +1,21 @@
-import Head from 'next/head';
-import Layout, { siteTitle } from '../components/layout';
-import utilStyles from '../styles/utils.module.css';
-import { getSortedPostsData } from '../lib/posts';
-import Link from 'next/link';
-import Date from '../components/date';
+import Head from 'next/head'
+import Layout, { siteTitle } from '../components/layout'
+import utilStyles from '../styles/utils.module.css'
+import { getSortedPostsData } from '../lib/posts'
+import Link from 'next/link'
+import Date from '../components/date'
+import { GetStaticProps } from 'next'
 
 
-/*
-Only Allowed in a Page
-getStaticProps can only be exported from a page. You can’t export it from non-page files.
-
-One of the reasons for this restriction is that React needs to have all the required data before the page is rendered.
-*/
-export async function getStaticProps() {
-  const allPostsData = getSortedPostsData();
-  return {
-    props: {
-      allPostsData,
-    },
-  };
-}
-
-export default function Home({ allPostsData }) {
+export default function Home({
+  allPostsData
+}: {
+  allPostsData: {
+    date: string
+    title: string
+    id: string
+  }[]
+}) {
   return (
     <Layout home>
       <Head>
@@ -56,4 +50,19 @@ export default function Home({ allPostsData }) {
       </section>
     </Layout>
   )
+}
+
+/*
+Only Allowed in a Page
+getStaticProps can only be exported from a page. You can’t export it from non-page files.
+
+One of the reasons for this restriction is that React needs to have all the required data before the page is rendered.
+*/
+export const getStaticProps: GetStaticProps = async () => {
+  const allPostsData = getSortedPostsData()
+  return {
+    props: {
+      allPostsData
+    }
+  }
 }
